@@ -1,48 +1,53 @@
 import { ResponsiveText, useMedallionSize } from "@/utils/getSize";
 import { getAccent } from "./Globals";
-import { useState } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import { getSvg } from "./SvgData";
-import { useMemo } from "react";
 
+interface StackImageProps {
+  image: number;
+  id: number;
+  style: React.CSSProperties;
+  override: number;
+  onMouseEnter: () => void;
+  onClick: () => void;
+  onMouseLeave: () => void;
+}
 
+const StackImage = memo(({image, id, style, override, onMouseEnter, onClick, onMouseLeave}: StackImageProps) => {
+  return (
+    <div className={`flex justify-center w-full transform-gpu scale-100
+                    transition-transform duration-200 ease-in-out transform-origin-center
+                    hover:scale-125 ${override === id ? "!scale-125" : ""}`}
+         style={style}
+         onMouseEnter={onMouseEnter}
+         onClick={onClick}
+         onMouseLeave={onMouseLeave}>
+      {getSvg(image, 5, "h-full")}
+    </div>
+  )
+});
 
 const Reader = ({readerID}:{
   readerID: number;
 }) => {
-
   const [selector, setSelector] = useState<number>(0);
   const [override, setOverride] = useState<number>(0);
+  const medallionSize = useMedallionSize();
+  const height = useMemo(() => medallionSize * 80, [medallionSize]);
+  const style = useMemo(() => ({ height }), [height]);
 
-  const StackImage = ({image, id}:{
-    image: number;
-    id: number;
-  }) => {
-
-    const medallionSize = useMedallionSize();
-    const height = useMemo(() => medallionSize * 80, [medallionSize])
-
-    console.log(medallionSize);
-    return (
-      <div className={`flex justify-center w-full ${override === 0 ? "hover:scale-125" : ""} transition-transform duration-200 
-                      ${override === id ? "scale-125" : ""}`}
-           style={{height: height}}
-           onMouseEnter={() => setSelector(id)}
-           onClick={() => setOverride(id)}
-           onMouseLeave={() => setSelector(0)}>
-        {getSvg(image, 5, "h-full")}
-      </div>
-    )
-  }
+  const handleMouseEnter = useCallback((id: number) => setSelector(id), []);
+  const handleClick = useCallback((id: number) => setOverride(id), []);
+  const handleMouseLeave = useCallback(() => setSelector(0), []);
 
   const StackImageDescription = ({id, title, children}:{
     id: number;
     title: string;
     children?: React.ReactNode;
   }) => {
-
     return (
       <div className={`absolute flex flex-col items-center px-[4%] transition-transform duration-400 
-           ${(selector === id  && override === 0) || override === id ? "opacity-100" : "opacity-0"}`}>
+           ${(selector === id && override === 0) || override === id ? "opacity-100" : "opacity-0"}`}>
         <ResponsiveText type={1} size={0.6}>{title}</ResponsiveText>
         <ResponsiveText type={1} size={0.5} className={`${getAccent(4, 'text')} text-center`}>
           {children}
@@ -50,7 +55,6 @@ const Reader = ({readerID}:{
       </div>
     )
   }
-
 
   const readers = [
     (<></>),
@@ -132,32 +136,101 @@ const Reader = ({readerID}:{
       </ResponsiveText>
       <div className="grid grid-cols-6 w-full mt-[3%] gap-1 md:gap-2.5 lg:gap-4">
 
-        <StackImage image={31} id={1} />  {/* VS Code */}
-        <StackImage image={18} id={2} />  {/* Git */}
-        <StackImage image={21} id={3} />  {/* Java */}
-        <StackImage image={10} id={4} />  {/* C++ */}
-        <StackImage image={11} id={5} />  {/* C# */}
-        <StackImage image={26} id={6} />  {/* Python */}
+        <StackImage image={31} id={1} style={style} override={override} 
+                   onMouseEnter={() => handleMouseEnter(1)} 
+                   onClick={() => handleClick(1)} 
+                   onMouseLeave={handleMouseLeave} />  {/* VS Code */}
+        <StackImage image={18} id={2} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(2)} 
+                   onClick={() => handleClick(2)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Git */}
+        <StackImage image={21} id={3} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(3)} 
+                   onClick={() => handleClick(3)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Java */}
+        <StackImage image={10} id={4} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(4)} 
+                   onClick={() => handleClick(4)} 
+                   onMouseLeave={handleMouseLeave} />  {/* C++ */}
+        <StackImage image={11} id={5} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(5)} 
+                   onClick={() => handleClick(5)} 
+                   onMouseLeave={handleMouseLeave} />  {/* C# */}
+        <StackImage image={26} id={6} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(6)} 
+                   onClick={() => handleClick(6)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Python */}
 
-        <StackImage image={30} id={7} />  {/* TypeScript */}
-        <StackImage image={24} id={8} />  {/* Next.js */}
-        <StackImage image={27} id={9} /> {/* React */}
-        <StackImage image={29} id={10} /> {/* TailwindCSS */}
-        <StackImage image={22} id={11} /> {/* MongoDB */}
-        <StackImage image={23} id={12} />  {/* MySQL */}
+        <StackImage image={30} id={7} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(7)} 
+                   onClick={() => handleClick(7)} 
+                   onMouseLeave={handleMouseLeave} />  {/* TypeScript */}
+        <StackImage image={24} id={8} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(8)} 
+                   onClick={() => handleClick(8)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Next.js */}
+        <StackImage image={27} id={9} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(9)} 
+                   onClick={() => handleClick(9)} 
+                   onMouseLeave={handleMouseLeave} />  {/* React */}
+        <StackImage image={29} id={10} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(10)} 
+                   onClick={() => handleClick(10)} 
+                   onMouseLeave={handleMouseLeave} />  {/* TailwindCSS */}
+        <StackImage image={22} id={11} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(11)} 
+                   onClick={() => handleClick(11)} 
+                   onMouseLeave={handleMouseLeave} />  {/* MongoDB */}
+        <StackImage image={23} id={12} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(12)} 
+                   onClick={() => handleClick(12)} 
+                   onMouseLeave={handleMouseLeave} />  {/* MySQL */}
 
-        <StackImage image={20} id={13} /> {/* JavaScript */}
-        <StackImage image={19} id={14} /> {/* HTML */}
-        <StackImage image={12} id={15} /> {/* CSS */}
-        <StackImage image={13} id={16} /> {/* Dart */}
-        <StackImage image={16} id={17} /> {/* Flutter */}
-        <StackImage image={28} id={18} /> {/* Swift */}
+        <StackImage image={20} id={13} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(13)} 
+                   onClick={() => handleClick(13)} 
+                   onMouseLeave={handleMouseLeave} />  {/* JavaScript */}
+        <StackImage image={19} id={14} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(14)} 
+                   onClick={() => handleClick(14)} 
+                   onMouseLeave={handleMouseLeave} />  {/* HTML */}
+        <StackImage image={12} id={15} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(15)} 
+                   onClick={() => handleClick(15)} 
+                   onMouseLeave={handleMouseLeave} />  {/* CSS */}
+        <StackImage image={13} id={16} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(16)} 
+                   onClick={() => handleClick(16)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Dart */}
+        <StackImage image={16} id={17} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(17)} 
+                   onClick={() => handleClick(17)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Flutter */}
+        <StackImage image={28} id={18} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(18)} 
+                   onClick={() => handleClick(18)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Swift */}
 
-        <StackImage image={14} id={19} /> {/* DigitalOcean */}
-        <StackImage image={17} id={20} /> {/* Framer */}
-        <StackImage image={15} id={21} /> {/* Figma */}
-        <StackImage image={25} id={22} /> {/* Photoshop */}
-        <StackImage image={9} id={23} />  {/* Illustrator */}
+        <StackImage image={14} id={19} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(19)} 
+                   onClick={() => handleClick(19)} 
+                   onMouseLeave={handleMouseLeave} />  {/* DigitalOcean */}
+        <StackImage image={17} id={20} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(20)} 
+                   onClick={() => handleClick(20)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Framer */}
+        <StackImage image={15} id={21} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(21)} 
+                   onClick={() => handleClick(21)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Figma */}
+        <StackImage image={25} id={22} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(22)} 
+                   onClick={() => handleClick(22)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Photoshop */}
+        <StackImage image={9} id={23} style={style} override={override}
+                   onMouseEnter={() => handleMouseEnter(23)} 
+                   onClick={() => handleClick(23)} 
+                   onMouseLeave={handleMouseLeave} />  {/* Illustrator */}
 
       </div>
       

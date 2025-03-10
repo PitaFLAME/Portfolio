@@ -3,13 +3,12 @@
 import { useMedallionSize } from "@/utils/getSize";
 import { usePageContext } from "../Context/PageContext";
 import { getAccent, getSize } from "../Globals";
-import { getContent } from "../Home/TileContent";
 
 
 
-const ContentTile = ({accentID, contentID, sizeType, orientation, clickable}:{
+const ContentTile = ({accentID, content, sizeType, orientation, clickable}:{
     accentID: number;
-    contentID?: number;
+    content?: {front: React.ReactNode, back?: React.ReactNode};
     sizeType?: number;
     orientation?: number;
     clickable?: number;
@@ -37,13 +36,9 @@ const ContentTile = ({accentID, contentID, sizeType, orientation, clickable}:{
         orientation === 4 ? '-translate-x-[8vw]' :
         '';
 
-    let content: {
-        front: React.ReactNode;
-        back?: React.ReactNode;
-    }
 
-    if (clickable && contentID !== undefined) { content = { front: getContent(contentID), back: getContent(contentID, true)} }
-    else if (contentID !== undefined) { content = { front: getContent(contentID)} }
+    if (clickable && content !== undefined) { content = { front: content.front, back: content.back }}
+    else if (content !== undefined) { content = { front: content.front }}
     else { content = { front: (<></>)} }
 
     return (

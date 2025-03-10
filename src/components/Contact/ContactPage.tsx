@@ -13,7 +13,7 @@ const ContactPage = () => {
       <div className="grid grid-cols-12 grid-rows-12 md:gap-2 gap-1"
       style={{ width: `${size.width}px`, height: `${size.height}px` }}>
           
-          <Tile sizeType={6} accentID={8} orientation={4} contentID={getContent(0)} />
+          <Tile sizeType={6} accentID={8} orientation={4} content={getContent(0)} />
           
 
 
