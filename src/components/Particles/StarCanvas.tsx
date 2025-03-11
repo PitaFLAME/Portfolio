@@ -388,7 +388,7 @@ const StarAnimation = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [render, getStar]);
 
   return (
     <canvas

@@ -120,10 +120,10 @@ const StarAnimation = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       updateStars();
-    }, 400);
+    }, 50);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [updateStars]);
 
   return (
     <div className="absolute grid grid-cols-48 grid-rows-48 gap-2 w-full h-full overflow-hidden">

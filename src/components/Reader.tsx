@@ -27,6 +27,8 @@ const StackImage = memo(({image, id, style, override, onMouseEnter, onClick, onM
   )
 });
 
+StackImage.displayName = 'StackImage';
+
 const Reader = ({readerID}:{
   readerID: number;
 }) => {

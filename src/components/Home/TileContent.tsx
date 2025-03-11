@@ -3,10 +3,9 @@
 import { getSvg } from "../SvgData";
 import { getAccent } from "../Globals";
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Circle, Quote } from "lucide-react";
-import React, { useRef } from "react";
+import React from "react";
 import { ResponsiveText, useMedallionSize } from "@/utils/getSize";
 import { usePageContext } from "../Context/PageContext";
-import Link from 'next/link'
 import Image from 'next/image'
 
 type TileContent = {
@@ -15,7 +14,7 @@ type TileContent = {
 }
 
 const TileContentComponent = ({contentID}: {contentID: number}) => {
-    const { activeReader, setActiveReader } = usePageContext();
+    const { setActiveReader } = usePageContext();
     const medallionSize = useMedallionSize();
     
     const getMedallionSize = (px: number) => ({
@@ -66,13 +65,7 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
                     {getSvg(8, 7,  `w-full h-full m-[21%]`)}
                 </div>
             </div>
-        </div> ), back: (
-            <div className="flex justify-center w-full h-full cursor-pointer" 
-                    onClick={() => setActiveReader(0)}>
-                <ChevronDown className={`${getAccent(8, 'text')} mb-auto`}
-                                style={getMedallionSize(110)} />
-            </div>
-        )},
+        </div> )},
         { front: ( <div key={3} className="relative flex flex-col justify-center items-center h-full gap-4 group">
         <div className="absolute w-24 -top-4 right-4"
              style={getMedallionSize(90)} >
@@ -122,9 +115,43 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
 
 TileContentComponent.displayName = 'TileContentComponent';
 
+// Separate function to get back content
+const getBackContent = (contentID: number): React.ReactNode | undefined => {
+    const { setActiveReader } = usePageContext();
+    const medallionSize = useMedallionSize();
+    
+    const getMedallionSize = (px: number) => ({
+        width: `${medallionSize * px}px`,
+        height: `${medallionSize * px}px`
+    });
+
+    switch (contentID) {
+        case 1:
+            return (
+                <div className="flex items-center w-full h-full cursor-pointer" 
+                    onClick={() => setActiveReader(0)}>
+                    <ChevronLeft className={`${getAccent(8, 'text')} ml-auto`}
+                                style={getMedallionSize(110)} />
+                </div>
+            );
+        case 2:
+            return (
+                <div className="flex justify-center w-full h-full cursor-pointer" 
+                    onClick={() => setActiveReader(0)}>
+                    <ChevronDown className={`${getAccent(8, 'text')} mb-auto`}
+                                style={getMedallionSize(110)} />
+                </div>
+            );
+        default:
+            return undefined;
+    }
+}
+
 export const getContent = (contentID: number) => {
+    const back = getBackContent(contentID);
     return {
         front: <TileContentComponent contentID={contentID} />,
+        ...(back && { back })
     };
 }
 
