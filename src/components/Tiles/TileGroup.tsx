@@ -46,10 +46,10 @@ const TileGroupInContext = ({tiles, className, orientation, sizeType}:{
     8=8x4 9=2x4 10=4x2 11=2x3 12:*/
 
     const transformStyle =
-            orientation === 1 ? 'hover:-translate-y-10' :
-            orientation === 2 ? 'hover:translate-x-10' :
-            orientation === 3 ? 'hover:translate-y-10' :
-            orientation === 4 ? 'hover:-translate-x-10' :
+            orientation === 1 ? 'hover:-translate-y-[3vw]' :
+            orientation === 2 ? 'hover:translate-x-[3vw]' :
+            orientation === 3 ? 'hover:translate-y-[3vw]' :
+            orientation === 4 ? 'hover:-translate-x-[3vw]' :
             ''
 
 
@@ -70,19 +70,19 @@ const TileGroupInContext = ({tiles, className, orientation, sizeType}:{
 
 
     return (
-        <div className={`h-full grid gap-2 transition-transform duration-500 ${internalCols} ${internalRows}
+        <div className={`h-full grid md:gap-2 gap-1 transition-transform duration-500 ${internalCols} ${internalRows}
             ${className} ${orientation} ${size[0]} ${size[1]} ${isHovered ? transformStyle : ''}`}>
             {orientation === 1 || orientation === 3 ? 
             <div className={`${sizes[0]} ${sizes[1]} ${rows[innerChildSizeType]} ${cols[innerChildSizeType]}`} 
                 onMouseEnter={ () => startHover() } onMouseLeave={ () => stopHover() }>
                 { innerChild }
-            </div> 
+            </div>
             : outerChild}
             {orientation === 1 || orientation === 3 ? outerChild : 
             <div className={`${sizes[0]} ${sizes[1]} ${rows[innerChildSizeType]} ${cols[innerChildSizeType]}`} 
             onMouseEnter={ () => startHover() } onMouseLeave={ () => stopHover() }>
-            { innerChild }
-        </div> }
+                { innerChild }
+            </div> }
             
 
         </div>

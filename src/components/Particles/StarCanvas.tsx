@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import { useConstellationMultiplier } from '@/utils/getSize';
+import React, { useEffect, useRef, useCallback } from 'react';
 
 /* 
 * Star System Component.
@@ -56,9 +57,9 @@ const StarAnimation = () => {
   const INIT_B_STARS = 160;
   const MIN_B_STARS = 120;
   const MAX_B_STARS = 200;
-  const STAR_LIFESPAN = 10000;
-  const STAR_LIFESPAN_VARIANCE = 4000;
-  const STAR_FADE_DURATION = 2000; 
+  const STAR_LIFESPAN = 30000;
+  const STAR_LIFESPAN_VARIANCE = 16000;
+  const STAR_FADE_DURATION = 2000;
   const STAR_CREATION_INTERVAL = 200;
   const MOTION_FACTOR = 0.02;
   const STAR_COLOR = '#FFEED4'
@@ -66,7 +67,7 @@ const StarAnimation = () => {
   const PARTICLE_SIZE_MULTIPLIER = 0.2;
   const LINE_WIDTH = 0.4;
   const FLICKER_SMOOTHING = 50;
-  const CONNECTION_RADIUS = 300;
+  const CONNECTION_RADIUS = 200;
   const MIN_STARS_FOR_CONNECTION = 6;
   const MAX_CONNECTIONS = 2;
   const CONNECTION_CREATION_CHANCE = 1;
@@ -74,11 +75,12 @@ const StarAnimation = () => {
   const CONNECTION_LIFESPAN_VARIANCE = 1800;
   const LINE_SPEED = 9.8;
 
+
   const getRandom = (min: number, max: number): number => {
     return Math.random() * (max - min) + min;
   };
 
-  const getStar = (isForeground: boolean): Star => ({
+  const getStar = useCallback((isForeground: boolean): Star => ({
     x: getRandom(-0.1, 1.1),
     y: getRandom(-0.1, 1.1),
     z: getRandom(0, 7),
@@ -87,7 +89,7 @@ const StarAnimation = () => {
     flicker: 0,
     createdAt: Date.now(),
     expiresAt: Date.now() + STAR_LIFESPAN + Math.floor(Math.random() * STAR_LIFESPAN_VARIANCE),
-  });
+  }), []);
 
   const calculateDistance = (p1: { x: number; y: number }, p2: { x: number; y: number }): number => {
     const dx = p1.x - p2.x;
@@ -95,7 +97,11 @@ const StarAnimation = () => {
     return Math.sqrt(dx * dx + dy * dy);
   };
 
-  const getConnection = (canvasWidth: number, canvasHeight: number): Connection | null => {
+  const getConnection = ({canvasWidth, canvasHeight}:{
+    canvasWidth: number,
+    canvasHeight: number
+  }): Connection | null => {
+
     if (Math.random() * 100 > CONNECTION_CREATION_CHANCE) {
       return null;
     }
@@ -104,10 +110,14 @@ const StarAnimation = () => {
       x: Math.random() * canvasWidth,
       y: Math.random() * canvasHeight
     };
+
+    const constellationMultiplier = Math.min((window.innerHeight  / 896), (window.innerWidth / 1280));
+    const connectionRadius = CONNECTION_RADIUS * constellationMultiplier;
+
   
     const tooCloseToExisting = connectionsRef.current.some(existingConnection => {
       const distance = calculateDistance(originPoint, existingConnection.originPoint);
-      return distance <= CONNECTION_RADIUS;
+      return distance <= connectionRadius;
     });
   
     if (tooCloseToExisting) {
@@ -116,7 +126,7 @@ const StarAnimation = () => {
   
     const nearbyStars = foregroundStarsRef.current.filter(star => {
       const starPos = calculatePosition(star, canvasWidth, canvasHeight, mouseRef.current.x, mouseRef.current.y);
-      return calculateDistance(originPoint, starPos) <= CONNECTION_RADIUS;
+      return calculateDistance(originPoint, starPos) <= connectionRadius;
     });
 
     nearbyStars.forEach(star => {
@@ -263,82 +273,79 @@ const StarAnimation = () => {
     context.globalAlpha = 1;
   };
 
-  const render = (context: CanvasRenderingContext2D, width: number, height: number) => {
-    context.clearRect(0, 0, width, height);
-    const currentTime = Date.now();
-
-    foregroundStarsCountRef.current = Math.min(
-      MAX_F_STARS, Math.max( MIN_F_STARS, foregroundStarsCountRef.current + (Math.floor(Math.random() * 3) - 1))
-    );
-
-    backgroundStarsCountRef.current = Math.min(
-      MAX_B_STARS, Math.max( MIN_B_STARS, backgroundStarsCountRef.current + (Math.floor(Math.random() * 3) - 1))
-    );
-
-    if (currentTime - lastStarCreationRef.current >= STAR_CREATION_INTERVAL) {
-      if (foregroundStarsRef.current.length < foregroundStarsCountRef.current) {
-        foregroundStarsRef.current.push(getStar(true));
-      }
-      lastStarCreationRef.current = currentTime;
-    }
-
-    if (backgroundStarsRef.current.length < backgroundStarsCountRef.current) {
-      backgroundStarsRef.current.push(getStar(false));
-    }
-
-    foregroundStarsRef.current = foregroundStarsRef.current.filter(star => currentTime < star.expiresAt);
-    backgroundStarsRef.current = backgroundStarsRef.current.filter(star => currentTime < star.expiresAt);
-
-
-    while (foregroundStarsRef.current.length < MIN_F_STARS) {
-      foregroundStarsRef.current.push(getStar(true));
-    }
-
-    while (backgroundStarsRef.current.length < MIN_B_STARS) {
-      backgroundStarsRef.current.push(getStar(false));
-    }
-
-
-    foregroundStarsRef.current.forEach(star => {
-      const pos = calculatePosition(star, width, height, mouseRef.current.x, mouseRef.current.y);
-      renderStar(context, star, pos, Math.max(width, height), currentTime);
-    });
-    
-    backgroundStarsRef.current.forEach(star => {
-      const pos = calculatePosition(star, width, height, mouseRef.current.x, mouseRef.current.y);
-      renderStar(context, star, pos, Math.max(width, height), currentTime);
-    });
-    
-
-    if (connectionsRef.current.length < MAX_CONNECTIONS) {
-      const newConnection = getConnection(width, height);
-      if (newConnection) {
-        connectionsRef.current.push(newConnection);
-      }
-    }
-
-    connectionsRef.current = connectionsRef.current.filter(connection => {
-      const age = currentTime - connection.startTime;
-      if (age >= connection.age) {
-        return false;
-      }
-      
-      const fadeStart = connection.age - 1000;
-      if (age > fadeStart) {
-        connection.opacity = 1 - ((age - fadeStart) / 1000);
-      }
-      
-      renderConnection(context, connection, width, height);
-      return true;
-    });
-  };
-
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const context = canvas.getContext('2d');
     if (!context) return;
+
+    const render = (width: number, height: number) => {
+      context.clearRect(0, 0, width, height);
+      const currentTime = Date.now();
+
+      foregroundStarsCountRef.current = Math.min(
+        MAX_F_STARS, Math.max( MIN_F_STARS, foregroundStarsCountRef.current + (Math.floor(Math.random() * 3) - 1))
+      );
+
+      backgroundStarsCountRef.current = Math.min(
+        MAX_B_STARS, Math.max( MIN_B_STARS, backgroundStarsCountRef.current + (Math.floor(Math.random() * 3) - 1))
+      );
+
+      if (currentTime - lastStarCreationRef.current >= STAR_CREATION_INTERVAL) {
+        if (foregroundStarsRef.current.length < foregroundStarsCountRef.current) {
+          foregroundStarsRef.current.push(getStar(true));
+        }
+        lastStarCreationRef.current = currentTime;
+      }
+
+      if (backgroundStarsRef.current.length < backgroundStarsCountRef.current) {
+        backgroundStarsRef.current.push(getStar(false));
+      }
+
+      foregroundStarsRef.current = foregroundStarsRef.current.filter(star => currentTime < star.expiresAt);
+      backgroundStarsRef.current = backgroundStarsRef.current.filter(star => currentTime < star.expiresAt);
+
+      while (foregroundStarsRef.current.length < MIN_F_STARS) {
+        foregroundStarsRef.current.push(getStar(true));
+      }
+
+      while (backgroundStarsRef.current.length < MIN_B_STARS) {
+        backgroundStarsRef.current.push(getStar(false));
+      }
+
+      foregroundStarsRef.current.forEach(star => {
+        const pos = calculatePosition(star, width, height, mouseRef.current.x, mouseRef.current.y);
+        renderStar(context, star, pos, Math.max(width, height), currentTime);
+      });
+      
+      backgroundStarsRef.current.forEach(star => {
+        const pos = calculatePosition(star, width, height, mouseRef.current.x, mouseRef.current.y);
+        renderStar(context, star, pos, Math.max(width, height), currentTime);
+      });
+
+      if (connectionsRef.current.length < MAX_CONNECTIONS) {
+        const newConnection = getConnection({canvasWidth: width, canvasHeight: height});
+        if (newConnection) {
+          connectionsRef.current.push(newConnection);
+        }
+      }
+
+      connectionsRef.current = connectionsRef.current.filter(connection => {
+        const age = currentTime - connection.startTime;
+        if (age >= connection.age) {
+          return false;
+        }
+        
+        const fadeStart = connection.age - 1000;
+        if (age > fadeStart) {
+          connection.opacity = 1 - ((age - fadeStart) / 1000);
+        }
+        
+        renderConnection(context, connection, width, height);
+        return true;
+      });
+    };
 
     foregroundStarsRef.current = Array.from({ length: INIT_F_STARS }, () => getStar(true));
     backgroundStarsRef.current = Array.from({ length: INIT_B_STARS }, () => getStar(false));
@@ -359,7 +366,7 @@ const StarAnimation = () => {
 
     const animate = () => {
       handleResize();
-      render(context, canvas.width, canvas.height);
+      render(canvas.width, canvas.height);
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
@@ -375,7 +382,7 @@ const StarAnimation = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [getStar]);
 
   return (
     <canvas

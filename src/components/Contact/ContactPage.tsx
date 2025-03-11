@@ -1,3 +1,4 @@
+import { useMainComponentSize } from "@/utils/getSize";
 import Tile from "../Tiles/Tile"
 import { getContent } from "./TileContent"
 
@@ -5,14 +6,14 @@ import { getContent } from "./TileContent"
 
 const ContactPage = () => {
 
+    const size = useMainComponentSize();
+    if (!size) { return null; }
 
     return (
-        <div className="grid 
-          grid-cols-8 grid-rows-8
-          md:grid-cols-12 md:grid-rows-12
-          h-[70vh] w-full gap-2">
+      <div className="grid grid-cols-12 grid-rows-12 md:gap-2 gap-1"
+      style={{ width: `${size.width}px`, height: `${size.height}px` }}>
           
-          <Tile sizeType={6} accentID={8} orientation={4} render={getContent(0)} />
+          <Tile sizeType={6} accentID={8} orientation={4} content={getContent(0)} />
           
 
 

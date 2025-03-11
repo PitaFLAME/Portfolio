@@ -1,5 +1,3 @@
-import { cn } from "@/lib/utils";
-
 const MaxWidthWrapper = ({className, children}: {
     className?: string;
     children: React.ReactNode;

@@ -54,19 +54,6 @@ const StarAnimation = () => {
   const stars = useRef<Star[]>([]);
   let starCount = 25;
 
-
-  const updateStars = async () => {
-    // remove expired stars
-    stars.current = stars.current.filter(star => !star.hasExpired());
-  
-    // add a star if there's room
-    const r = Math.floor(Math.random() * 100);
-    if (getStarCount() > stars.current.length && r > 60) { stars.current.push(getStar()); }
-  
-    setForceUpdate(prev => prev + 1);
-  }
-
-
   const getStarCount = () => {
     const r = (Math.random() * 2) - 1;
     starCount = r > 0 ? starCount + 1 : starCount - 1;
@@ -74,7 +61,6 @@ const StarAnimation = () => {
     else if (starCount < 15) { starCount = 25; }
     return starCount;
   }
-
 
   const isPositionValid = (newPosition: [number, number]): boolean => {
     for (const star of stars.current) {
@@ -118,9 +104,20 @@ const StarAnimation = () => {
 
 
   useEffect(() => {
+    const updateStars = async () => {
+      // remove expired stars
+      stars.current = stars.current.filter(star => !star.hasExpired());
+    
+      // add a star if there's room
+      const r = Math.floor(Math.random() * 100);
+      if (getStarCount() > stars.current.length && r > 60) { stars.current.push(getStar()); }
+    
+      setForceUpdate(prev => prev + 1);
+    }
+
     const interval = setInterval(() => {
       updateStars();
-    }, 400);
+    }, 50);
 
     return () => clearInterval(interval);
   }, []);

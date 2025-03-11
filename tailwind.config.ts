@@ -9,10 +9,10 @@ const config: Config = {
   safelist: [
 
     'bg-white',
-    'bg-slate-100', 'bg-slate-200', 'bg-slate-300', 'bg-slate-400', 'bg-slate-500', 'bg-slate-500', 'bg-slate-600', 'bg-slate-700', 'bg-slate-800', 'bg-slate-900',
-    'bg-zinc-100', 'bg-zinc-200', 'bg-zinc-300', 'bg-zinc-400', 'bg-zinc-500', 'bg-zinc-500', 'bg-zinc-600', 'bg-zinc-700', 'bg-zinc-800', 'bg-zinc-900',
-    'bg-teal-100', 'bg-teal-200', 'bg-teal-300', 'bg-teal-400', 'bg-teal-500', 'bg-teal-500', 'bg-teal-600', 'bg-teal-700', 'bg-teal-800', 'bg-teal-900',
-    'bg-blue-100', 'bg-blue-200', 'bg-blue-300', 'bg-blue-400', 'bg-blue-500', 'bg-blue-500', 'bg-blue-600', 'bg-blue-700', 'bg-blue-800', 'bg-blue-900',
+    'bg-slate-100', 'bg-slate-200', 'bg-slate-300', 'bg-slate-400', 'bg-slate-500', 'bg-slate-500', 'bg-slate-600', 'bg-slate-700', 'bg-slate-800', 'bg-slate-900', 'bg-slate-950',
+    'bg-zinc-100', 'bg-zinc-200', 'bg-zinc-300', 'bg-zinc-400', 'bg-zinc-500', 'bg-zinc-500', 'bg-zinc-600', 'bg-zinc-700', 'bg-zinc-800', 'bg-zinc-900', 'bg-zinc-900',
+    'bg-teal-100', 'bg-teal-200', 'bg-teal-300', 'bg-teal-400', 'bg-teal-500', 'bg-teal-500', 'bg-teal-600', 'bg-teal-700', 'bg-teal-800', 'bg-teal-900', 'bg-teal-900',
+    'bg-blue-100', 'bg-blue-200', 'bg-blue-300', 'bg-blue-400', 'bg-blue-500', 'bg-blue-500', 'bg-blue-600', 'bg-blue-700', 'bg-blue-800', 'bg-blue-900', 'bg-blue-900',
 
     'fill-white',
     'fill-slate-100', 'fill-slate-200', 'fill-slate-300', 'fill-slate-400', 'fill-slate-500', 'fill-slate-500', 'fill-slate-600', 'fill-slate-700', 'fill-slate-800', 'fill-slate-900',
@@ -67,6 +67,23 @@ const config: Config = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require("@xpd/tailwind-3dtransforms"),
+    function ({ addUtilities }: any) {
+      addUtilities(
+        {
+          '.backface-visible': {
+            'backfaceVisibility': 'visible',
+            '-webkit-backface-visibility': 'visible'
+          },
+          '.backface-hidden': {
+            'backfaceVisibility': 'hidden',
+            '-webkit-backface-visibility': 'hidden'
+          },
+        },
+        ['responsive', 'hover']
+      );
+    },
+  ],
 };
 export default config;
