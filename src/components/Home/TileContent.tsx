@@ -45,13 +45,6 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
                     <ChevronRight className={`${getAccent(8, 'text')} ${getAccent(6, 'group-hover:text')}`} 
                                 style={getMedallionSize(110)} />
                 </div>
-            ), 
-            back: (
-                <div className="flex items-center w-full h-full cursor-pointer" 
-                    onClick={() => setActiveReader(0)}>
-                    <ChevronLeft className={`${getAccent(8, 'text')} ml-auto`}
-                                 style={getMedallionSize(110)} />
-                </div>
             )
         },
         { front: ( <div key={2} className="flex flex-col px-[8%] py-[10%] justify-end items-center h-full w-full group">
@@ -67,21 +60,20 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
             </div>
         </div> )},
         { front: ( <div key={3} className="relative flex flex-col justify-center items-center h-full gap-4 group">
-        <div className="absolute w-24 -top-4 right-4"
-             style={getMedallionSize(90)} >
-            {getSvg(0, 8)}
-        </div>
-        
-        <Image 
-            src="https://avatars.githubusercontent.com/u/171903351?v=4"
-            alt="GitHub Profile"
-            width={medallionSize * 220}
-            height={medallionSize * 220}
-            className={`rounded-full border-4 lg:border-8 ${getAccent(8, 'border')}
-            transition-transform duration-500 ease-out transform group-hover:scale-105`}
-        />
-
-    </div> )},
+            <div className="absolute w-24 -top-4 right-4"
+                style={getMedallionSize(90)} >
+                {getSvg(0, 8)}
+            </div>
+            
+            <Image 
+                src="https://avatars.githubusercontent.com/u/171903351?v=4"
+                alt="GitHub Profile"
+                width={medallionSize * 220}
+                height={medallionSize * 220}
+                className={`rounded-full border-4 lg:border-8 ${getAccent(8, 'border')}
+                transition-transform duration-500 ease-out transform group-hover:scale-105`}
+            />
+        </div> )},
         { front: ( <div key={4} className="relative flex justify-center items-center w-full h-full">
             <Image 
                 src="/assets/space.jpg"
@@ -99,11 +91,9 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
                     - Julian Gough
                 </ResponsiveText>
             </div>
-            
         </div> )},
         { front: ( <div key={5} className="relative w-full h-full">
             { getSvg(1, 10, "lg:h-72 lg:w-72 h-32 w-32 object-cover") }
-            
         </div> )},
         { front: ( <div key={6} className="w-full h-full" >
             <h2>Full </h2>
@@ -115,8 +105,7 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
 
 TileContentComponent.displayName = 'TileContentComponent';
 
-// Separate function to get back content
-const getBackContent = (contentID: number): React.ReactNode | undefined => {
+const BackContentComponent = ({contentID}: {contentID: number}) => {
     const { setActiveReader } = usePageContext();
     const medallionSize = useMedallionSize();
     
@@ -143,15 +132,16 @@ const getBackContent = (contentID: number): React.ReactNode | undefined => {
                 </div>
             );
         default:
-            return undefined;
+            return null;
     }
 }
 
+BackContentComponent.displayName = 'BackContentComponent';
+
 export const getContent = (contentID: number) => {
-    const back = getBackContent(contentID);
     return {
         front: <TileContentComponent contentID={contentID} />,
-        ...(back && { back })
+        back: contentID === 1 || contentID === 2 ? <BackContentComponent contentID={contentID} /> : undefined
     };
 }
 
