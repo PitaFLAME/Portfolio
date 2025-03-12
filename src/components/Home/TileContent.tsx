@@ -41,7 +41,7 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
                     <Circle className={`w-full h-full ${getAccent(8, 'text')} row-start-1 col-start-1`} />
                     {getSvg(7, 8, "w-full h-full p-[11%] row-start-1 col-start-1")}
                 </div>
-                <ChevronRight className={`${getAccent(8, 'text')} ${getAccent(6, 'group-hover:text')}`} 
+                <ChevronRight className={`${getAccent(8, 'text')}`} 
                             style={getMedallionSize(110)} />
             </div>
         )},
