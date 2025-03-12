@@ -1,7 +1,13 @@
 import { ResponsiveText, useMedallionSize } from "@/utils/getSize";
 import { getAccent } from "./Globals";
-import { useState, useCallback, useMemo, memo } from "react";
+import { useState, useCallback, useMemo, memo, FormEvent } from "react";
 import { getSvg } from "./SvgData";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, ScrollText } from "lucide-react";
+import { usePageContext } from "./Context/PageContext"; 
+import emailjs from '@emailjs/browser';
+
+
 
 interface StackImageProps {
   image: number;
@@ -12,6 +18,8 @@ interface StackImageProps {
   onClick: () => void;
   onMouseLeave: () => void;
 }
+
+
 
 const StackImage = memo(({image, id, style, override, onMouseEnter, onClick, onMouseLeave}: StackImageProps) => {
   return (
@@ -29,18 +37,80 @@ const StackImage = memo(({image, id, style, override, onMouseEnter, onClick, onM
 
 StackImage.displayName = 'StackImage';
 
+interface MessageFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 const Reader = ({readerID}:{
   readerID: number;
 }) => {
   const [selector, setSelector] = useState<number>(0);
   const [override, setOverride] = useState<number>(0);
+  const [formData, setFormData] = useState<MessageFormData>({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
   const medallionSize = useMedallionSize();
   const height = useMemo(() => medallionSize * 80, [medallionSize]);
   const style = useMemo(() => ({ height }), [height]);
+  const { setActiveReader } = usePageContext();
 
   const handleMouseEnter = useCallback((id: number) => setSelector(id), []);
   const handleClick = useCallback((id: number) => setOverride(id), []);
   const handleMouseLeave = useCallback(() => setSelector(0), []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const result = await emailjs.send(
+        'service_lne9l9k',
+        'template_b7be1s7', 
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        'Uqsqw2TX0HBa-Y3ue'
+      );
+
+      if (result.status === 200) {
+        setSubmitStatus('success');
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const StackImageDescription = ({id, title, children}:{
     id: number;
@@ -59,8 +129,8 @@ const Reader = ({readerID}:{
   }
 
   const readers = [
-    (<></>),
-    (<>
+    (<div key={0}></div>),
+    (<div key={1}>
       <ResponsiveText type={1} size={1.2} className={`${getAccent(6, 'text')}`}>
         Education & Certifications
       </ResponsiveText>
@@ -130,14 +200,12 @@ const Reader = ({readerID}:{
         </ResponsiveText>
         </div>
       </div>
-
-
-    </>), (<>
+    </div>),
+    (<div key={2}>
       <ResponsiveText type={1} size={1.2} className={`${getAccent(6, 'text')}`}>
         My Technologies
       </ResponsiveText>
       <div className="grid grid-cols-6 w-full mt-[3%] gap-1 md:gap-2.5 lg:gap-4">
-
         <StackImage image={31} id={1} style={style} override={override} 
                    onMouseEnter={() => handleMouseEnter(1)} 
                    onClick={() => handleClick(1)} 
@@ -233,7 +301,6 @@ const Reader = ({readerID}:{
                    onMouseEnter={() => handleMouseEnter(23)} 
                    onClick={() => handleClick(23)} 
                    onMouseLeave={handleMouseLeave} />  {/* Illustrator */}
-
       </div>
       
       { /* Hit box to disable override once activated */}
@@ -310,17 +377,239 @@ const Reader = ({readerID}:{
         <StackImageDescription id={23} title="Adobe Illustrator">
 
         </StackImageDescription>
-
       </div>
+    </div>),
 
 
 
-    </>),
 
-  ]
+
+    (<div key={3}>
+      <ResponsiveText type={1} size={1.2} className={`${getAccent(6, 'text')}`}>
+        Bio
+      </ResponsiveText>
+      <div className="flex flex-row mt-[2%]">
+        <div className={`${getAccent(7, 'bg')} w-[0.2%] rounded-lg mr-[5%] ml-[0.1%] `} />
+        <div>
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
+            
+          </ResponsiveText>
+        </div>
+      </div>
+    </div>),
+
+
+
+
+
+    (<div key={4}>
+      <ResponsiveText type={1} size={1.2} className={`${getAccent(6, 'text')}`}>
+        Cooldowns
+      </ResponsiveText>
+      <div className="flex flex-row mt-[2%]">
+        <div className={`${getAccent(7, 'bg')} w-[0.2%] rounded-lg mr-[5%] ml-[0.1%] `} />
+        <div>
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
+            
+          </ResponsiveText>
+        </div>
+      </div>
+      <Link href="https://github.com/PitaFLAME/Cooldowns" target="_blank" className="absolute flex justify-end bottom-[5%] right-0 group">
+        <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')} flex flex-row items-center group group-hover:${getAccent(4, 'text')}`}>
+          View the Repository on&nbsp;<span className={`underline underline-offset-4`}>GitHub</span>
+          <ChevronRight className={`${getAccent(7, 'text')} group`} style={{height: `${medallionSize * 16}px`, width: `${medallionSize * 16}px`}} />
+        </ResponsiveText>
+      </Link>
+    </div>),
+
+
+
+
+    (<div key={5}>
+      <ResponsiveText type={1} size={1.2} className={`${getAccent(6, 'text')}`}>
+        CodeDevils Projects
+      </ResponsiveText>
+      <div className="flex flex-row mt-[2%]">
+        <div className={`${getAccent(7, 'bg')} w-[0.2%] rounded-lg mr-[5%] ml-[0.1%] `} />
+        <div>
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
+            
+          </ResponsiveText>
+        </div>
+      </div>
+      <Link href="https://github.com/ASU-CodeDevils" target="_blank" className="absolute flex justify-end bottom-[5%] right-0 group">
+        <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')} flex flex-row items-center group group-hover:${getAccent(4, 'text')}`}>
+          View the Organization on&nbsp;<span className={`underline underline-offset-4`}>GitHub</span>
+          <ChevronRight className={`${getAccent(7, 'text')} group`} style={{height: `${medallionSize * 16}px`, width: `${medallionSize * 16}px`}} />
+        </ResponsiveText>
+      </Link>
+    </div>),
+
+
+
+
+    (<div key={6} className="relative h-full w-full">
+      <div className="flex flex-row items-center">
+        <ChevronLeft className={`${getAccent(3, 'text')} cursor-pointer mr-[2%] ${getAccent(7, 'bg')} rounded-xl`} 
+                    style={{height: `${medallionSize * 48}px`, width: `${medallionSize * 48}px`}} 
+                    onClick={() => setActiveReader(0)}/>
+        <ResponsiveText type={1} size={1.4} className={`${getAccent(3, 'text')}`}>
+          Twitter API
+        </ResponsiveText>
+      </div>
+      <Link href="https://github.com/PitaFLAME/Twitter-API" target="_blank" className="absolute flex justify-end bottom-[5%] right-0 group">
+        <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')} flex flex-row items-center group group-hover:${getAccent(4, 'text')}`}>
+          View the Repository on&nbsp;<span className={`underline underline-offset-4`}>GitHub</span>
+          <ChevronRight className={`${getAccent(7, 'text')} group`} style={{height: `${medallionSize * 16}px`, width: `${medallionSize * 16}px`}} />
+        </ResponsiveText>
+      </Link>
+    </div>),
+
+
+
+
+    (<div key={7}>
+      <ResponsiveText type={1} size={1.2} className={`${getAccent(6, 'text')}`}>
+        GoodBytes
+      </ResponsiveText>
+      <div className="flex flex-row mt-[2%]">
+        <div className={`${getAccent(7, 'bg')} w-[0.2%] rounded-lg mr-[5%] ml-[0.1%] `} />
+        <div>
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
+            
+          </ResponsiveText>
+        </div>
+      </div>
+      <Link href="https://github.com/PitaFLAME/GoodBytes" target="_blank" className="absolute flex justify-end bottom-[5%] right-0 group">
+        <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')} flex flex-row items-center group group-hover:${getAccent(4, 'text')}`}>
+          View the Repository on&nbsp;<span className={`underline underline-offset-4`}>GitHub</span>
+          <ChevronRight className={`${getAccent(7, 'text')} group`} style={{height: `${medallionSize * 16}px`, width: `${medallionSize * 16}px`}} />
+        </ResponsiveText>
+      </Link>
+    </div>),
+
+
+
+
+    (<div key={8} className="relative h-full w-full">
+      <div className="flex flex-row items-center">
+        <ResponsiveText type={1} size={1.4} className={`${getAccent(3, 'text')}`}>
+          Send a Message
+        </ResponsiveText>
+      </div>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
+              Name
+            </ResponsiveText>
+            <input 
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-slate-500"
+              placeholder="Your name"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
+              Email
+            </ResponsiveText>
+            <input 
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-slate-500"
+              placeholder="your.email@example.com"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
+            Subject
+          </ResponsiveText>
+          <input 
+            type="text"
+            name="subject"
+            value={formData.subject}
+            onChange={handleInputChange}
+            required
+            className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-slate-500"
+            placeholder="Message subject"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
+            Message
+          </ResponsiveText>
+          <textarea 
+            name="message"
+            value={formData.message}
+            onChange={handleInputChange}
+            required
+            className="w-full h-[200px] px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-slate-500 resize-none"
+            placeholder="Write your message here..."
+          />
+        </div>
+        {submitStatus === 'success' && (
+          <ResponsiveText type={0} size={0.4} className="text-green-500">
+            Message sent successfully!
+          </ResponsiveText>
+        )}
+        {submitStatus === 'error' && (
+          <ResponsiveText type={0} size={0.4} className="text-red-500">
+            Failed to send message. Please try again.
+          </ResponsiveText>
+        )}
+        <button 
+          type="submit"
+          disabled={isSubmitting}
+          className={`self-end px-6 py-3 rounded-lg ${getAccent(6, 'bg')} hover:${getAccent(5, 'bg')} 
+            transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
+        >
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(3, 'text')}`}>
+            {isSubmitting ? 'Sending...' : 'Send Message'}
+          </ResponsiveText>
+        </button>
+      </form>
+    </div>),
+
+
+
+
+    (<div key={9} className="relative h-full w-full">
+      <div className="flex flex-row items-center">  
+        <ResponsiveText type={1} size={1.4} className={`${getAccent(5, 'text')}`}>
+          Resume
+        </ResponsiveText>
+      </div>
+      <div className="relative h-[calc(100%-80px)] w-full mt-[20px]">
+        <iframe 
+          src="/assets/pdf/resume.pdf" 
+          className="w-full h-full rounded-lg"
+          title="Resume"
+        />
+        <a 
+          href="/assets/pdf/resume.pdf" 
+          download 
+          className={`absolute bottom-4 right-4 flex items-center gap-2 px-4 py-2 rounded-lg 
+            ${getAccent(6, 'bg')} hover:${getAccent(5, 'bg')} transition-colors duration-200`}
+        >
+          <ScrollText className={`${getAccent(3, 'text')}`} size={20} />
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(3, 'text')}`}>
+            Download PDF
+          </ResponsiveText>
+        </a>
+      </div>
+    </div>)
+  ];
 
 
   return readers[readerID] 
 }
 
-export default Reader
+export default Reader;

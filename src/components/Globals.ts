@@ -14,6 +14,8 @@ const sizeHMap: { [key: number]: string } = {
     10: 'row-span-4',
     11: 'row-span-2',
     12: 'row-span-1',
+    13: 'row-span-4',
+
 };
 
 const sizeWMap: { [key: number]: string } = {
@@ -29,10 +31,12 @@ const sizeWMap: { [key: number]: string } = {
     10: 'col-span-2',
     11: 'col-span-3',
     12: 'col-span-3',
+    13: 'col-span-3',
+
 };
 
 /* 1=1x1 2=1x2 3=2x1 4=2x2 5=4x4 6=6x4 7=4x6
-8=8x4 9=2x4 10=4x2 11=2x3 12:*/
+8=8x4 9=4x2 10=2x4 11=3x2 12:3x1 13:3x4*/
 
 const accents = [
     ['-white', '-slate-100', '-slate-200', '-slate-300', '-slate-400', '-slate-500', '-slate-600', '-slate-700', '-slate-800', '-slate-900', '-slate-950'],
