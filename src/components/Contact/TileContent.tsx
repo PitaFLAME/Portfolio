@@ -20,7 +20,7 @@ const useContent = () => {
 
     return [
         { front: (  // Business Card
-            <div className="relative flex flex-row justify-center items-center h-full w-full gap-4 group">
+            <div key={0} className="relative flex flex-row justify-center items-center h-full w-full gap-4 group">
             
             <Image 
                 src="https://avatars.githubusercontent.com/u/171903351?v=4"
@@ -46,14 +46,14 @@ const useContent = () => {
 
 
         )}, { front: ( // Send message 
-            <div className='flex flex-col items-center justify-start w-full h-full'>
+            <div key={1} className='flex flex-col items-center justify-start w-full h-full'>
                 <MessageCircle style={getMedallionSize(80)} className={`${getAccent(6, 'text')} mt-[30%]`} />
                 <div className='absolute w-[80%] h-[70%] cursor-pointer'
                      onClick={() => setActiveReader(8)} />
             </div>
 
             ), back: (
-                <div className="flex items-end justify-center w-full h-full cursor-pointer" 
+                <div key={1} className="flex items-end justify-center w-full h-full cursor-pointer" 
                 onClick={() => setActiveReader(0)}>
                 <ChevronUp className={`${getAccent(7, 'text')}`}
                             style={getMedallionSize(110)} />
@@ -62,7 +62,7 @@ const useContent = () => {
 
 
         )}, { front: ( // LinkedIn
-            <Link href="https://www.linkedin.com/in/pita/"
+            <Link key={2} href="https://www.linkedin.com/in/pita/"
                   className='flex flex-col items-center justify-center w-full h-full cursor-pointer' 
                   target="_blank">
                 <div style={getMedallionSize(64)}>
@@ -71,7 +71,7 @@ const useContent = () => {
             </Link>
 
         )}, { front: ( // GitHub
-            <Link href="https://github.com/PitaFLAME"
+            <Link key={3} href="https://github.com/PitaFLAME"
                   className='flex flex-col items-center justify-center w-full h-full'
                   target="_blank">
                 <div style={getMedallionSize(64)}>
@@ -82,28 +82,28 @@ const useContent = () => {
 
 
         )}, { front: ( // Codepen
-            <div className='flex flex-col items-center justify-center w-full h-full'>
+            <div key={4} className='flex flex-col items-center justify-center w-full h-full'>
                 <Codepen style={getMedallionSize(64)} className={`${getAccent(6, 'text')}`} />
             </div>
 
 
 
         )}, { front: ( // Email
-            <div className='flex flex-col items-center justify-center w-full h-full'>
+            <div key={5} className='flex flex-col items-center justify-center w-full h-full'>
                 <Mail style={getMedallionSize(64)} className={`${getAccent(6, 'text')}`} />
             </div>
 
 
 
         )}, { front: ( // Phone
-            <div className='flex flex-col items-center justify-center w-full h-full'>
+            <div key={6} className='flex flex-col items-center justify-center w-full h-full'>
                 <Phone style={getMedallionSize(64)} className={`${getAccent(6, 'text')}`} />
             </div>
 
 
 
         )}, { front: ( // Resume
-            <div className='flex items-center justify-start w-full h-full'>
+            <div key={7} className='flex items-center justify-start w-full h-full'>
                 <div className='grid grid-cols-1 grid-rows-1 ml-[20%]'>
                     <div className='flex justify-center items-center col-start-1 row-start-1'><ScrollText style={getMedallionSize(84)} className={`${getAccent(6, 'text')}`} /></div>
                     <div className='flex justify-center items-center col-start-1 row-start-1'><Circle style={getMedallionSize(132)} className={`${getAccent(6, 'text')}`} /></div>
@@ -113,7 +113,7 @@ const useContent = () => {
             </div>
 
             ), back: (
-                <div className='flex items-center justify-start w-full h-full cursor-pointer'
+                <div key={7} className='flex items-center justify-start w-full h-full cursor-pointer'
                      onClick={() => setActiveReader(0)}>
                     <ChevronRight className={`${getAccent(7, 'text')}`}
                                 style={getMedallionSize(110)} />
@@ -122,7 +122,7 @@ const useContent = () => {
 
             
         )}, { front: (
-            <div className='flex flex-col justify-center w-full h-full px-[10%]'>
+            <div key={8} className='flex flex-col justify-center w-full h-full px-[10%]'>
                 <ResponsiveText type={2} size={0.5} className={`${getAccent(4, 'text')} font-rubik`}>
                     Let's work together!
                 </ResponsiveText>
@@ -131,7 +131,7 @@ const useContent = () => {
 
 
         )}, { front: (
-            <div className="relative w-full h-full">
+            <div key={9} className="relative w-full h-full">
                 { getSvg(1, 10, "lg:h-72 lg:w-72 h-32 w-32 object-cover") }
             </div>
         )}
