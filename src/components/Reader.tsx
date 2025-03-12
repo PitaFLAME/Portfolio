@@ -398,7 +398,7 @@ const Reader = ({readerID}:{
         <div className={`${getAccent(6, 'bg')} h-0.5 w-[90%] rounded-lg mb-[2.4%] `} />
         <div>
           <ResponsiveText type={0} size={0.5} className={`${getAccent(4, 'text')} text-center`}>
-            Versatile Junior Software Engineer and Networking Specialist with a passion for creating quality software. &nbsp;
+            Versatile Software Engineer and Networking Specialist with a passion for creating quality software. &nbsp;
             With 9 years of learning and working with programming languages and 5 years of professional IT experience, skilled in problem solving, troubleshooting complex issues, and designing effective solutions. &nbsp;
             Experienced in various technology stacks, including those for application, mobile, full-stack web, and scripting. &nbsp;
             Always looking for ways to expand on and apply knowledge and skills. &nbsp;
