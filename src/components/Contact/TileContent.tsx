@@ -124,7 +124,7 @@ const useContent = () => {
         )}, { front: (
             <div key={8} className='flex flex-col justify-center w-full h-full px-[10%]'>
                 <ResponsiveText type={2} size={0.5} className={`${getAccent(4, 'text')} font-rubik`}>
-                    Let's work together!
+                    Let&apos;s work together!
                 </ResponsiveText>
             </div>
 

@@ -32,7 +32,7 @@ const SelectorButton = ({text, id}:{
 }) => {
 
     const [isHovered, setHovered] = useState(false);
-    const { activePage, setActivePage, setActiveReader } = usePageContext()
+    const { activePage, setActivePage, setActiveReader, setActiveTile } = usePageContext()
     const active = activePage === id
 
     return (
@@ -40,7 +40,7 @@ const SelectorButton = ({text, id}:{
             <p className={`text-white z-30 text-sm group cursor-pointer`}
                 onMouseEnter={() => {setHovered(true)}}
                 onMouseLeave={() => {setHovered(false)}}
-                onClick={() => {setActivePage(id); setActiveReader(0)}}>
+                onClick={() => {setActivePage(id); setActiveReader(0); setActiveTile(0)}}>
                     {text}
             </p>
             <div className={`absolute h-full w-full rounded-lg
