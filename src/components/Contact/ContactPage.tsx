@@ -64,8 +64,8 @@ const ContactPage = () => {
             <Tile sizeType={11} accentID={7} orientation={2} content={getContent(8)} />
             <div className="col-span-2 row-span-2" />
             <TileGroup sizeType={9} orientation={2} tiles={[
-              (<Tile sizeType={3} accentID={7} content={getContent(9)} />),
-              (<Tile sizeType={11} accentID={8} />) ]} />
+              (<Tile key={9} sizeType={3} accentID={7} content={getContent(9)} />),
+              (<Tile key={10} sizeType={11} accentID={8} />) ]} />
         </div>
 
 
