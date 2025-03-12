@@ -1,6 +1,6 @@
 import { useMainComponentSize } from "@/utils/getSize";
 import Tile from "../Tiles/Tile"
-import { useGetContent } from "./TileContent"
+import { getContent } from "./TileContent"
 import TileGroup from "../Tiles/TileGroup";
 import { usePageContext } from "../Context/PageContext";
 import { getAccent } from "../Globals";
@@ -21,16 +21,16 @@ const ContactPage = () => {
         style={{ width: `${mainSize.width}px`, height: `${mainSize.height}px` }}>
             
             <div className="col-span-2 row-span-4" />
-            <Tile sizeType={6} accentID={8} orientation={4} content={useGetContent(0)} />
-            <Tile sizeType={13} accentID={7} orientation={1} content={useGetContent(1)} clickable={8} />
+            <Tile sizeType={6} accentID={8} orientation={4} content={getContent(0)} />
+            <Tile sizeType={13} accentID={7} orientation={1} content={getContent(1)} clickable={8} />
             <div className="col-span-1 row-span-4" />
 
             <div className="col-span-1 row-span-2" />
-            <Tile sizeType={4} accentID={8} orientation={3} content={useGetContent(2)} />
-            <Tile sizeType={4} accentID={8} orientation={3} content={useGetContent(3)} />
-            <Tile sizeType={4} accentID={7} orientation={3} content={useGetContent(4)} />
-            <Tile sizeType={4} accentID={7} orientation={3} content={useGetContent(5)} activatable={1} />
-            <Tile sizeType={4} accentID={8} orientation={3} content={useGetContent(6)} activatable={2} />
+            <Tile sizeType={4} accentID={8} orientation={3} content={getContent(2)} />
+            <Tile sizeType={4} accentID={8} orientation={3} content={getContent(3)} />
+            <Tile sizeType={4} accentID={7} orientation={3} content={getContent(4)} />
+            <Tile sizeType={4} accentID={7} orientation={3} content={getContent(5)} activatable={1} />
+            <Tile sizeType={4} accentID={8} orientation={3} content={getContent(6)} activatable={2} />
             <div className="col-span-1 row-span-2" />
             <div className="col-span-2 row-span-2" />
             <div className="col-span-8 row-span-1" />
@@ -60,11 +60,11 @@ const ContactPage = () => {
             </div>
 
             <div className="col-span-1 row-span-4" />
-            <Tile sizeType={6} accentID={8} orientation={4} content={useGetContent(7)} clickable={9} />
-            <Tile sizeType={11} accentID={7} orientation={2} content={useGetContent(8)} />
+            <Tile sizeType={6} accentID={8} orientation={4} content={getContent(7)} clickable={9} />
+            <Tile sizeType={11} accentID={7} orientation={2} content={getContent(8)} />
             <div className="col-span-2 row-span-2" />
             <TileGroup sizeType={9} orientation={2} tiles={[
-              (<Tile key={9} sizeType={3} accentID={7} content={useGetContent(9)} />),
+              (<Tile key={9} sizeType={3} accentID={7} content={getContent(9)} />),
               (<Tile key={10} sizeType={11} accentID={8} />) ]} />
         </div>
 

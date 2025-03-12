@@ -1,11 +1,17 @@
-import { ChevronRight, Twitter } from 'lucide-react'
+"use client"
+
+import { ChevronRight } from 'lucide-react'
 import { getAccent } from '../Globals'
 import { getSvg } from '../SvgData'
-import Link from 'next/link'
 import { ResponsiveText, useMedallionSize } from '@/utils/getSize'
 import { usePageContext } from '../Context/PageContext'
 
-const useContent = () => {
+type TileContent = {
+    front: React.ReactNode;
+    back?: React.ReactNode;
+}
+
+const TileContentComponent = ({contentID}: {contentID: number}) => {
     const { setActiveReader } = usePageContext();
     const medallionSize = useMedallionSize();
     
@@ -14,7 +20,7 @@ const useContent = () => {
         height: `${medallionSize * px}px`
     });
 
-    return [
+    const content: TileContent[] = [
         { front: (  // Cooldowns
             <div key={0} className="relative group w-full h-full">
                 <div className="absolute flex opacity-0 group group-hover:opacity-95
@@ -38,7 +44,7 @@ const useContent = () => {
                 </div>
                 {getSvg(3, 9, "w=[110%] mt-8 p-2 mt-2")}
             </div>
-        )}, 
+        )},
         { front: (  // Twitter API
             <div key={1} className="relative group w-full h-full" >
                 <div className="absolute flex opacity-0 group group-hover:opacity-95
@@ -66,7 +72,7 @@ const useContent = () => {
                     </div>
                 </div>
             </div>
-        )}, 
+        )},
         { front: (  // GoodBytes
             <div key={2} className="relative group w-full h-full" >
                 <div className="absolute flex opacity-0 group group-hover:opacity-95
@@ -109,17 +115,16 @@ const useContent = () => {
                 {getSvg(6, 9, "h-full py-2 ml-auto mr-12")}
             </div>
         )}
-    ]
-}
+    ];
 
-const TileContentComponent = ({contentID}: {contentID: number}) => {
-    const content = useContent();
     return content[contentID].front;
 }
 
 TileContentComponent.displayName = 'TileContentComponent';
 
-export const useGetContent = (contentID: number) => {
-    const content = useContent();
-    return content[contentID];
+export const getContent = (contentID: number) => {
+    return {
+        front: <TileContentComponent contentID={contentID} />,
+        back: undefined
+    };
 }
