@@ -357,25 +357,25 @@ const Reader = ({readerID}:{
           Paired with the Flutter framework, it was my go-to for mobile development.  Its widget-based structure was interesting to learn.
         </StackImageDescription>
         <StackImageDescription id={17} title="Flutter">
-
+          Paired with the Dart language, it was my go-to for mobile development.  Its widget-based structure was interesting to learn.
         </StackImageDescription>
         <StackImageDescription id={18} title="Swift">
-
+          Paired with the SwiftUI framework, it was my go-to for iOS development.  Its declarative syntax was interesting to learn.
         </StackImageDescription>
         <StackImageDescription id={19} title="DigitalOcean">
-
+          Representative of several different cloud services I&apos;ve used.  I&apos;ve used it for personal projects and for work.
         </StackImageDescription>
         <StackImageDescription id={20} title="Framer">
-
+          Framer is great for animation in React.  I&apos;ve used it for a few projects and it&apos;s a fun way to make animations.
         </StackImageDescription>
         <StackImageDescription id={21} title="Figma">
-
+          I&apos;ve used Figma for a few projects and it&apos;s a great tool for prototyping.  I appreciate how similar its controls are to Adobe products.
         </StackImageDescription>
         <StackImageDescription id={22} title="Adobe Photoshop">
-
+          I&apos;ve used Photoshop for years, and I still find new things to learn about it.  It&apos;s a great tool for photo editing and graphic design.
         </StackImageDescription>
         <StackImageDescription id={23} title="Adobe Illustrator">
-
+          I&apos;ve used Illustrator for years, and I still find new things to learn about it.  It&apos;s a great tool for vector graphics and illustrations.
         </StackImageDescription>
       </div>
     </div>),
@@ -386,13 +386,23 @@ const Reader = ({readerID}:{
 
     (<div key={3}>
       <ResponsiveText type={1} size={1.2} className={`${getAccent(6, 'text')}`}>
-        Bio
+        Biography
       </ResponsiveText>
-      <div className="flex flex-row mt-[2%]">
-        <div className={`${getAccent(7, 'bg')} w-[0.2%] rounded-lg mr-[5%] ml-[0.1%] `} />
+      <div className="flex flex-col items-center mt-[2%]">
+        <div className="relative">
+          <ResponsiveText type={2} size={4} className={`${getAccent(4, 'text')} text-center font-allison hover:-rotate-3 cursor-default
+          transition-transform duration-200 group`}>
+            Pita
+          </ResponsiveText>
+        </div>
+        <div className={`${getAccent(6, 'bg')} h-0.5 w-[90%] rounded-lg mb-[2.4%] `} />
         <div>
-          <ResponsiveText type={0} size={0.5} className={`${getAccent(5, 'text')}`}>
-            
+          <ResponsiveText type={0} size={0.5} className={`${getAccent(4, 'text')} text-center`}>
+            Versatile Junior Software Engineer and Networking Specialist with a passion for creating quality software. &nbsp;
+            With 9 years of learning and working with programming languages and 5 years of professional IT experience, skilled in problem solving, troubleshooting complex issues, and designing effective solutions. &nbsp;
+            Experienced in various technology stacks, including those for application, mobile, full-stack web, and scripting. &nbsp;
+            Always looking for ways to expand on and apply knowledge and skills. &nbsp;
+            Takes a creative approach to technological problems- software design as an art form.
           </ResponsiveText>
         </div>
       </div>

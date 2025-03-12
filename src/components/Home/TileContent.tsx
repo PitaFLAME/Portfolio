@@ -30,6 +30,8 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
                     Hi, my name is&nbsp;&nbsp;
                     <span className="text-[240%] font-allison text-slate-200">Pita</span>
                 </ResponsiveText>
+                <div className="absolute group w-[75%] h-[90%] cursor-pointer left-0 z-20"
+                    onClick={() => setActiveReader(3)} />
             </div>
         )},
         { front: ( 
