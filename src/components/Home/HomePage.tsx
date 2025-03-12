@@ -1,5 +1,5 @@
 import Tile from "../Tiles/Tile"
-import { getContent } from "./TileContent"
+import { useGetContent } from "./TileContent"
 import TileGroup from "../Tiles/TileGroup"
 import { useMainComponentSize } from "@/utils/getSize"
 import { usePageContext } from "../Context/PageContext"
@@ -23,17 +23,17 @@ const HomePage = () => {
             
         
 
-        <Tile sizeType={8} accentID={9} content={getContent(0)} orientation={4}  clickable={3}/>
-        <Tile sizeType={7} accentID={8} content={getContent(4)} orientation={1} />
+        <Tile sizeType={8} accentID={9} content={useGetContent(0)} orientation={4}  clickable={3}/>
+        <Tile sizeType={7} accentID={8} content={useGetContent(4)} orientation={1} />
         <TileGroup sizeType={9} orientation={4} tiles={[
                 (<Tile sizeType={11} accentID={9} key={0} />),
-                (<Tile sizeType={3} accentID={8} content={getContent(5)} key={1} />) ]} />
+                (<Tile sizeType={3} accentID={8} content={useGetContent(5)} key={1} />) ]} />
         
-        <Tile sizeType={5} accentID={9} content={getContent(3)} />
+        <Tile sizeType={5} accentID={9} content={useGetContent(3)} />
 
-        <Tile sizeType={7} accentID={8} content={getContent(2)} orientation={3} clickable={2} />
+        <Tile sizeType={7} accentID={8} content={useGetContent(2)} orientation={3} clickable={2} />
         <Tile sizeType={9} accentID={7} orientation={2} />
-        <Tile sizeType={8} accentID={9} content={getContent(1)} orientation={2} clickable={1} />
+        <Tile sizeType={8} accentID={9} content={useGetContent(1)} orientation={2} clickable={1} />
             
             
         </div>

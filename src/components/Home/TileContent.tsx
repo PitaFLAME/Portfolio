@@ -139,7 +139,7 @@ const TileContentComponent = ({contentID}: {contentID: number}) => {
 
 TileContentComponent.displayName = 'TileContentComponent';
 
-export const getContent = (contentID: number) => {
+export const useGetContent = (contentID: number) => {
     const content = useContent();
     return content[contentID];
 }
