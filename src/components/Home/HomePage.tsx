@@ -23,7 +23,7 @@ const HomePage = () => {
             
         
 
-        <Tile sizeType={8} accentID={9} content={getContent(0)} orientation={4} />
+        <Tile sizeType={8} accentID={9} content={getContent(0)} orientation={4}  clickable={3}/>
         <Tile sizeType={7} accentID={8} content={getContent(4)} orientation={1} />
         <TileGroup sizeType={9} orientation={4} tiles={[
                 (<Tile sizeType={11} accentID={9} key={0} />),

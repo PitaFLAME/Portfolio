@@ -44,6 +44,12 @@ const config: Config = {
     'to-teal-100', 'to-teal-200', 'to-teal-300', 'to-teal-400', 'to-teal-500', 'to-teal-500', 'to-teal-600', 'to-teal-700', 'to-teal-800', 'to-teal-900',
     'to-blue-100', 'to-blue-200', 'to-blue-300', 'to-blue-400', 'to-blue-500', 'to-blue-500', 'to-blue-600', 'to-blue-700', 'to-blue-800', 'to-blue-900',
 
+    'group-hover:text-white',
+    'group-hover:text-slate-100', 'group-hover:text-slate-200', 'group-hover:text-slate-300', 'group-hover:text-slate-400', 'group-hover:text-slate-500', 'group-hover:text-slate-600', 'group-hover:text-slate-700', 'group-hover:text-slate-800', 'group-hover:text-slate-900',
+    'group-hover:text-zinc-100', 'group-hover:text-zinc-200', 'group-hover:text-zinc-300', 'group-hover:text-zinc-400', 'group-hover:text-zinc-500', 'group-hover:text-zinc-600', 'group-hover:text-zinc-700', 'group-hover:text-zinc-800', 'group-hover:text-zinc-900',
+    'group-hover:text-teal-100', 'group-hover:text-teal-200', 'group-hover:text-teal-300', 'group-hover:text-teal-400', 'group-hover:text-teal-500', 'group-hover:text-teal-600', 'group-hover:text-teal-700', 'group-hover:text-teal-800', 'group-hover:text-teal-900',
+    'group-hover:text-blue-100', 'group-hover:text-blue-200', 'group-hover:text-blue-300', 'group-hover:text-blue-400', 'group-hover:text-blue-500', 'group-hover:text-blue-600', 'group-hover:text-blue-700', 'group-hover:text-blue-800', 'group-hover:text-blue-900',
+
   ],
   theme: {
     extend: {

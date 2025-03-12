@@ -6,16 +6,17 @@ import { getAccent, getSize } from "../Globals";
 
 
 
-const ContentTile = ({accentID, content, sizeType, orientation, clickable}:{
+const ContentTile = ({accentID, content, sizeType, orientation, clickable, activatable}:{
     accentID: number;
     content?: {front: React.ReactNode, back?: React.ReactNode};
     sizeType?: number;
     orientation?: number;
     clickable?: number;
+    activatable?: number;
     
 }) => {
     
-    const { activeReader } = usePageContext();
+    const { activeReader, activeTile, setActiveTile } = usePageContext();
     const medallionSize = useMedallionSize();
     
     const size = sizeType ? getSize(sizeType) : ['row-span-1','col-span-1', null];
@@ -29,13 +30,25 @@ const ContentTile = ({accentID, content, sizeType, orientation, clickable}:{
         orientation === 4 ? `hover:-translate-x-[3vw]` :
         '';
 
-    const clickedTransformStyle = 
+    const activatedTransformStyle =
+        orientation === 1 ? '-translate-y-[3vw]' :
+        orientation === 2 ? 'translate-x-[3vw]' :
+        orientation === 3 ? 'translate-y-[3vw]' :
+        orientation === 4 ? '-translate-x-[3vw]' :
+        '';
+
+    const flippedTransformStyle = 
         orientation === 1 ? '-translate-y-[8vw]' :
         orientation === 2 ? 'translate-x-[8vw]' :
         orientation === 3 ? 'translate-y-[8vw]' :
         orientation === 4 ? '-translate-x-[8vw]' :
         '';
 
+    const handleClick = () => {
+        if (activatable) {
+            setActiveTile(activeTile === activatable ? 0 : activatable);
+        }
+    };
 
     if (clickable && content !== undefined) { content = { front: content.front, back: content.back }}
     else if (content !== undefined) { content = { front: content.front }}
@@ -44,7 +57,7 @@ const ContentTile = ({accentID, content, sizeType, orientation, clickable}:{
     return (
         clickable ? (
             <FlipTile className={`h-full transition-transform duration-500 
-                ${activeReader === clickable ? clickedTransformStyle : transformStyle}
+                ${activeReader === clickable ? flippedTransformStyle : transformStyle}
                 ${size[0]} ${size[1]}`} readerID={clickable} orientation={orientation}
                 front={
                 <div className={`${accent} lg:rounded-xl rounded-md w-full h-full overflow-hidden`}>
@@ -54,18 +67,18 @@ const ContentTile = ({accentID, content, sizeType, orientation, clickable}:{
                     <div className={`${accent} lg:rounded-xl rounded-md w-full h-full overflow-hidden`}>
                         { content.back }
                     </div>}
-
             />
-        )
-            : (
-        <div className={`h-full transition-transform duration-500 
-            ${transformStyle}
-            ${size[0]} ${size[1]}`}>
-            <div className={`${accent} lg:rounded-xl rounded-md w-full h-full overflow-hidden`}>
-                { content.front }
+        ) : (
+            <div 
+                className={`h-full transition-transform duration-500 cursor-pointer
+                    ${activatable && activeTile === activatable ? activatedTransformStyle : transformStyle}
+                    ${size[0]} ${size[1]}`}
+                onClick={handleClick}>
+                <div className={`${accent} lg:rounded-xl rounded-md w-full h-full overflow-hidden`}>
+                    { content.front }
+                </div>
             </div>
-        </div>
-            )
+        )
     )
 }
 
@@ -93,12 +106,12 @@ return (
             : ''}`}
     >
         {/* Front side */}
-        <div className="absolute w-full h-full backface-hidden">
+        <div className="absolute w-full h-full backface-hidden bg-opacity-40 backdrop-blur-md">
           {front}
         </div>
 
         {/* Back side */}
-        <div className="absolute w-full h-full backface-hidden [transform:rotateX(180deg)]">
+        <div className="absolute w-full h-full backface-hidden [transform:rotateX(180deg)] bg-opacity-40 backdrop-blur-md">
           {back}
         </div>
       </div>
@@ -108,4 +121,3 @@ return (
   
 
 export default ContentTile
-
